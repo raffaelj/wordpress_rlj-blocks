@@ -5,11 +5,24 @@
  * which makes it higher in priority.
  */
 
-.wp-block-cgb-block-rlj-blocks  {
-  // background: $green;
-  // border: 0.2rem solid $black;
-  // color: $black;
+.wp-block-rlj-background  {
   // margin: 0 auto;
-  // max-width: 740px;
   // padding: 2rem;
+}
+
+.has-background {
+    background-color: #000;
+    background-size: cover;
+    background-position: 50%;
+    height: 100%;
+    // min-height: 430px;
+    // width: 100%;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // overflow: hidden;
+}
+
+.has-parallax {
+    background-attachment: fixed;
 }

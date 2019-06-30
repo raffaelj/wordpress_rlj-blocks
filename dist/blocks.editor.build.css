@@ -10,3 +10,11 @@
  * CSS for just Backend enqueued after style.scss
  * which makes it higher in priority.
  */
+.has-background {
+  background-color: #000;
+  background-size: cover;
+  background-position: 50%;
+  height: 100%; }
+
+.has-parallax {
+  background-attachment: fixed; }
