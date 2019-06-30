@@ -1,10 +1,14 @@
 
 // https://javascriptforwp.com/how-to-use-inspectorcontrols/
+// https://github.com/WordPress/gutenberg/blob/master/packages/block-library/src/cover/edit.js
+// https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
+// https://developer.wordpress.org/resource/dashicons/
+// https://wordpress.org/gutenberg/handbook/block-api/
 
 // <pre>{JSON.stringify(props, null, 2)}</pre>
 
 //  Import CSS.
-import './style.scss';
+// import './style.scss';
 import './editor.scss';
 
 const { __ } = wp.i18n;
