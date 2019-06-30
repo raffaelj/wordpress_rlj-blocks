@@ -66,13 +66,15 @@ function rlj_blocks_cgb_block_assets() { // phpcs:ignore
 	register_block_type(
 		'cgb/block-rlj-blocks', array(
 			// Enqueue blocks.style.build.css on both frontend & backend.
-			'style'         => 'rlj_blocks-cgb-style-css',
+			// 'style'         => 'rlj_blocks-cgb-style-css',
 			// Enqueue blocks.build.js in the editor only.
 			'editor_script' => 'rlj_blocks-cgb-block-js',
 			// Enqueue blocks.editor.build.css in the editor only.
 			'editor_style'  => 'rlj_blocks-cgb-block-editor-css',
 		)
 	);
+  
+  
 }
 
 // Hook: Block assets.
