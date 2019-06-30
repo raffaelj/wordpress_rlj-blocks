@@ -1,4 +1,5 @@
 
+// Notes and research:
 // https://javascriptforwp.com/how-to-use-inspectorcontrols/
 // https://github.com/WordPress/gutenberg/blob/master/packages/block-library/src/cover/edit.js
 // https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
@@ -9,7 +10,6 @@
 
 
 //  Import CSS.
-// import './style.scss';
 import './editor.scss';
 
 const { __ } = wp.i18n;
@@ -27,6 +27,7 @@ const {
 	MediaUpload,
 	MediaUploadCheck,
 } = wp.editor;
+
 const {
 	// IconButton,
 	// Toolbar,
@@ -35,6 +36,7 @@ const {
   // Panel,
   PanelBody,
   PanelRow,
+	SelectControl,
 } = wp.components;
 
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
@@ -60,8 +62,9 @@ var allowSectionStyles = wp.compose.createHigherOrderComponent( function( BlockE
   };
 
 }, 'allowSectionStyles' );
-
 wp.hooks.addFilter( 'editor.BlockEdit', 'rlj/section', allowSectionStyles );
+// end of styles crash fix
+
 
 registerBlockType( 'rlj/section', {
 
@@ -74,12 +77,12 @@ registerBlockType( 'rlj/section', {
 		__( 'Wrapper' ),
 	],
   supports: {
-      // align: true,
-      align: [
-          'full',
-          'wide'
-      ],
-      anchor: true,
+    // align: true,
+    align: [
+        'full',
+        'wide'
+    ],
+    anchor: true,
   },
   styles: [
     {
@@ -103,6 +106,13 @@ registerBlockType( 'rlj/section', {
   attributes: {
 		'url': {
 			'type': 'string'
+		},
+		'size': {
+			'type': 'string',
+      'default': 'full'
+		},
+		'sizes': {
+			'type': 'object'
 		},
 		'id': {
 			'type': 'number'
@@ -136,29 +146,15 @@ registerBlockType( 'rlj/section', {
 
 	edit: function( props ) {
 
-    function onSelectImage( media ) {
-      if ( ! media || ! media.url ) {
-        props.setAttributes( {
-          url: undefined,
-          id: undefined,
-        } );
-        return;
+    function getImageSizeOptions() {
+
+      if (typeof props.attributes.sizes == 'object') {
+        return Object.keys(props.attributes.sizes)
+                .map(function(k) { return {label:k, value:k}; });
       }
-    }
 
-    function removeImage(e) {
-      if(e) e.preventDefault();
-      
-      props.setAttributes( {
-        url: undefined,
-        id: undefined,
-      } );
-    }
+      return [];
 
-    function toggleHasParallax() {
-      props.setAttributes( {
-        hasParallax: !props.attributes.hasParallax
-      } );
     }
 
     var style = null;
@@ -196,7 +192,10 @@ registerBlockType( 'rlj/section', {
                     title: __( 'Background' ),
                     instructions: __( 'Upload an image or pick one from your media library.' ),
                   } }
-                  onSelect={ media => { props.setAttributes({ id: media.id, url: media.url }); } }
+                  onSelect={ media => { 
+                    // console.log(media);
+                    props.setAttributes({ id: media.id, url: media.url, sizes: media.sizes }); 
+                  } }
                   accept='image/*'
                   allowedTypes={ ALLOWED_MEDIA_TYPES }
                   notices={ props.noticeUI }
@@ -215,7 +214,7 @@ registerBlockType( 'rlj/section', {
               <PanelRow>
                 <MediaUploadCheck>
                   <MediaUpload
-                    onSelect={ media => { props.setAttributes({ id: media.id, url: media.url }); } }
+                    onSelect={ media => { props.setAttributes({ id: media.id, url: media.url, sizes: media.sizes }); } }
                     allowedTypes={ ALLOWED_MEDIA_TYPES }
                     value={ props.attributes.id }
                     render={ ( { open } ) => (
@@ -231,42 +230,59 @@ registerBlockType( 'rlj/section', {
               </PanelRow>
               ) }
 
+              { props.attributes.url && (
               <PanelRow>
                 <Button 
-                  onClick={ removeImage }
+                  onClick={ () => { props.setAttributes({ id: null, url: null }); } }
                   className="button button-large"
                 >
                 { __('Remove background') }
                 </Button>
               </PanelRow>
+              ) }
 
+              { props.attributes.url && (
+              <PanelRow>
+                <SelectControl
+                  label={ __( 'Image Size' ) }
+                  value={ props.attributes.size || '' }
+                  options={ getImageSizeOptions() }
+                  onChange={ (size) => { props.setAttributes({ size: size, url: props.attributes.sizes[size].url }); } }
+                />
+              </PanelRow>
+              ) }
+
+              { props.attributes.url && (
               <PanelRow>
                 <label
-                    htmlFor="rlj-section-has-parallax"
+                  htmlFor="rlj-section-has-parallax"
                 >
                     { __( 'Fixed background', 'rlj' ) }
                 </label>
                 <FormToggle
-                    id="rlj-section-has-parallax"
-                    label={ __( 'Fixed background', 'rlj' ) }
-                    checked={ props.attributes.hasParallax }
-                    onChange={ () => { props.setAttributes({ hasParallax: !props.attributes.hasParallax }); } }
+                  id="rlj-section-has-parallax"
+                  label={ __( 'Fixed background', 'rlj' ) }
+                  checked={ props.attributes.hasParallax }
+                  onChange={ () => { props.setAttributes({ hasParallax: !props.attributes.hasParallax }); } }
                 />
               </PanelRow>
+              ) }
 
+              { props.attributes.url && (
               <PanelRow>
                 <label
-                    htmlFor="rlj-section-hide-background"
+                  htmlFor="rlj-section-hide-background"
                 >
                     { __( 'Hide background while editing', 'rlj' ) }
                 </label>
                 <FormToggle
-                    id="rlj-section-hide-background"
-                    label={ __( 'Hide background while editing', 'rlj' ) }
-                    checked={ props.attributes.hideBackgroundWhileEditing }
-                    onChange={ () => { props.setAttributes({ hideBackgroundWhileEditing: !props.attributes.hideBackgroundWhileEditing }); } }
+                  id="rlj-section-hide-background"
+                  label={ __( 'Hide background while editing', 'rlj' ) }
+                  checked={ props.attributes.hideBackgroundWhileEditing }
+                  onChange={ () => { props.setAttributes({ hideBackgroundWhileEditing: !props.attributes.hideBackgroundWhileEditing }); } }
                 />
               </PanelRow>
+              ) }
             </PanelBody>
 
       </InspectorControls>
@@ -281,21 +297,19 @@ registerBlockType( 'rlj/section', {
 
 	},
 
-	// save: function( props ) {
 	save: function( props ) {
 
     var style = null;
-    // var classes = props.className;
     var classes = '';
-    
+
     if (props.attributes.url) {
 
       style = {
         backgroundImage: 'url(' + props.attributes.url + ')'
       };
-      
+
       classes += ' has-background';
-      
+
       if (props.attributes.hasParallax) {
           classes += ' has-parallax';
       }
