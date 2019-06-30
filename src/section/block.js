@@ -19,24 +19,24 @@ const {
 } = wp.blocks;
 
 const {
-	BlockControls,
-	BlockIcon,
+  BlockControls,
+  BlockIcon,
   InnerBlocks,
   InspectorControls,
-	MediaPlaceholder,
-	MediaUpload,
-	MediaUploadCheck,
+  MediaPlaceholder,
+  MediaUpload,
+  MediaUploadCheck,
 } = wp.editor;
 
 const {
-	// IconButton,
-	// Toolbar,
+  // IconButton,
+  // Toolbar,
   Button,
   FormToggle,
   // Panel,
   PanelBody,
   PanelRow,
-	SelectControl,
+  SelectControl,
 } = wp.components;
 
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
@@ -68,14 +68,14 @@ wp.hooks.addFilter( 'editor.BlockEdit', 'rlj/section', allowSectionStyles );
 
 registerBlockType( 'rlj/section', {
 
-	title: __( 'Section' ),
-	icon: 'layout',
-	category: 'common', // common, formatting, layout widgets, embed.
-	keywords: [
-		__( 'rlj-blocks' ),
-		__( 'Background' ),
-		__( 'Wrapper' ),
-	],
+  title: __( 'Section' ),
+  icon: 'layout',
+  category: 'common', // common, formatting, layout widgets, embed.
+  keywords: [
+    __( 'rlj-blocks' ),
+    __( 'Background' ),
+    __( 'Wrapper' ),
+  ],
   supports: {
     // align: true,
     align: [
@@ -104,47 +104,47 @@ registerBlockType( 'rlj/section', {
     },
   ],
   attributes: {
-		'url': {
-			'type': 'string'
-		},
-		'size': {
-			'type': 'string',
+    'url': {
+      'type': 'string'
+    },
+    'size': {
+      'type': 'string',
       'default': 'full'
-		},
-		'sizes': {
-			'type': 'object'
-		},
-		'id': {
-			'type': 'number'
-		},
-		'hasParallax': {
-			'type': 'boolean',
-			'default': false
-		},
-		'hideBackgroundWhileEditing': {
-			'type': 'boolean',
-			'default': false
-		},
-		// 'dimRatio': {
-			// 'type': 'number',
-			// 'default': 50
-		// },
-		// 'overlayColor': {
-			// 'type': 'string'
-		// },
-		// 'customOverlayColor': {
-			// 'type': 'string'
-		// },
-		// 'backgroundType': {
-			// 'type': 'string',
-			// 'default': 'image'
-		// },
-		// 'focalPoint': {
-			// 'type': 'object'
-		// }
+    },
+    'sizes': {
+      'type': 'object'
+    },
+    'id': {
+      'type': 'number'
+    },
+    'hasParallax': {
+      'type': 'boolean',
+      'default': false
+    },
+    'hideBackgroundWhileEditing': {
+      'type': 'boolean',
+      'default': false
+    },
+    // 'dimRatio': {
+      // 'type': 'number',
+      // 'default': 50
+    // },
+    // 'overlayColor': {
+      // 'type': 'string'
+    // },
+    // 'customOverlayColor': {
+      // 'type': 'string'
+    // },
+    // 'backgroundType': {
+      // 'type': 'string',
+      // 'default': 'image'
+    // },
+    // 'focalPoint': {
+      // 'type': 'object'
+    // }
   },
 
-	edit: function( props ) {
+  edit: function( props ) {
 
     function getImageSizeOptions() {
 
@@ -295,9 +295,9 @@ registerBlockType( 'rlj/section', {
       </div>
     ];
 
-	},
+  },
 
-	save: function( props ) {
+  save: function( props ) {
 
     var style = null;
     var classes = '';
