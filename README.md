@@ -6,11 +6,19 @@ I called the block "Section". It is only a wrapper block, that contains other bl
 
 The CSS will not load automatically in the frontend. You have to add your own custom styles. It's a bad design decision, to run tons of requests just to add 10 lines of css for each plugin. I use it with a child theme of Twentynineteen.
 
+## Installation
+
+Copy all files of this repository into `/wp-content/plugins/rlj-blocks`.
+
+I don't know, how to add a plugin to the official WordPress plugins, yet.
+
 ## Notes
 
 If you use the new, fancy Gutenberg features, Wordpress will try to load a Webfont from Google. They still default to kick their users privacy straight into the ass. So dont't forget to install [Disable Google Fonts](https://wordpress.org/plugins/disable-google-fonts/).
 
 ## Custom CSS
+
+Add this code to your child theme or copy it to "Additional CSS" of your Customizer.
 
 ```css
 .has-background {

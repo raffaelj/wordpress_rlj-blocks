@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: rlj-blocks
- * Plugin URI: 
- * Description: rlj-blocks — is a Gutenberg plugin created via create-guten-block.
+ * Plugin URI: https://github.com/raffaelj/rlj-blocks
+ * Description: A simple wrapper block for Gutenberg with a background image
  * Author: Raffael Jesche
  * Author URI: https://www.rlj.me
  * Version: 0.1.0
