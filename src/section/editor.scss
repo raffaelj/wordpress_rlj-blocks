@@ -4,25 +4,30 @@
  * CSS for just Backend enqueued after style.scss
  * which makes it higher in priority.
  */
+ 
 
 .wp-block-rlj-background  {
-  // margin: 0 auto;
-  // padding: 2rem;
 }
 
 .has-background {
-    background-color: #000;
     background-size: cover;
     background-position: 50%;
     height: 100%;
-    // min-height: 430px;
-    // width: 100%;
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
-    // overflow: hidden;
 }
 
 .has-parallax {
     background-attachment: fixed;
+}
+
+.is-style-rounded {
+    border-radius: $border-radius;
+}
+
+.is-style-shadow {
+    @include box-shadow(0 3px 4px 0px $color-black-transp-light);
+}
+
+.is-style-shadow-rounded {
+    border-radius: $border-radius;
+    @include box-shadow(0 3px 4px 0px $color-black-transp-light);
 }

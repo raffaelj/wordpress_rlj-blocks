@@ -5,9 +5,15 @@
  * that are used across the project.
 */
 
-// Colors.
-$black: rgb(41, 41, 41);
-$white: #f4f4f4;
-$gray: #dedede;
-$green: #bada55;
-$red: orangered;
+
+
+// box-shadow
+@mixin box-shadow($shadow...) {
+	-webkit-box-shadow: $shadow;
+     -moz-box-shadow: $shadow;
+          box-shadow: $shadow;
+}
+
+
+$color-black-transp-light: rgba(0,0,0,.2);
+$border-radius: 2px;
