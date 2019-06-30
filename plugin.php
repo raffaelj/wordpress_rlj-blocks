@@ -21,15 +21,3 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Block Initializer.
  */
 require_once plugin_dir_path( __FILE__ ) . 'src/init.php';
-
-
-// remove some privacy violations and requests
-// google fonts disabled via https://wordpress.org/plugins/disable-google-fonts/
-
-// source: https://actualwizard.com/how-to-remove-the-wordpress-gutenberg-stylesheet
-//kill Gutenberg stylesheet
-function wp_dequeue_gutenberg_styles() {
-     // wp_dequeue_style( 'wp-block-library' );
-     wp_dequeue_style( 'wp-block-library-theme' );
-}
-add_action( 'wp_print_styles', 'wp_dequeue_gutenberg_styles', 100 );

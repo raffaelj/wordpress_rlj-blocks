@@ -7,6 +7,7 @@
 
 // <pre>{JSON.stringify(props, null, 2)}</pre>
 
+
 //  Import CSS.
 // import './style.scss';
 import './editor.scss';
@@ -16,10 +17,6 @@ const { __ } = wp.i18n;
 const {
   registerBlockType,
 } = wp.blocks;
-
-// const {
-  // Fragment,
-// } = wp.element;
 
 const {
 	BlockControls,
@@ -31,11 +28,11 @@ const {
 	MediaUploadCheck,
 } = wp.editor;
 const {
-	IconButton,
-	Toolbar,
+	// IconButton,
+	// Toolbar,
   Button,
   FormToggle,
-  Panel,
+  // Panel,
   PanelBody,
   PanelRow,
 } = wp.components;
@@ -43,6 +40,28 @@ const {
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 const IMAGE_BACKGROUND_TYPE = 'image';
 
+
+// fix to prevent a crash when clicking on "Styles" in the sidebar
+// if using without Gutenberg addon version >= 6.0.0
+// source: https://github.com/WordPress/gutenberg/issues/9897#issuecomment-478362380
+var el = wp.element.createElement;
+var allowSectionStyles = wp.compose.createHigherOrderComponent( function( BlockEdit ) {
+
+  return function( props ) {
+    var content = el( BlockEdit, props );
+
+    if( props.name === 'rlj/section' && typeof props.insertBlocksAfter === 'undefined' ) {
+      content = el( 'div', {} );
+    }
+
+    return el(
+      wp.element.Fragment, {}, content
+    );
+  };
+
+}, 'allowSectionStyles' );
+
+wp.hooks.addFilter( 'editor.BlockEdit', 'rlj/section', allowSectionStyles );
 
 registerBlockType( 'rlj/section', {
 
@@ -126,7 +145,7 @@ registerBlockType( 'rlj/section', {
         return;
       }
     }
-    
+
     function removeImage(e) {
       if(e) e.preventDefault();
       
@@ -135,7 +154,7 @@ registerBlockType( 'rlj/section', {
         id: undefined,
       } );
     }
-    
+
     function toggleHasParallax() {
       props.setAttributes( {
         hasParallax: !props.attributes.hasParallax
@@ -144,7 +163,7 @@ registerBlockType( 'rlj/section', {
 
     var style = null;
     var classes = props.className;
-    // var image_preview_style = 'max-height:150px;margin:0 auto;';
+
     var image_preview_style = {
       maxHeight: '150px',
       margin: '0 auto',
@@ -247,10 +266,6 @@ registerBlockType( 'rlj/section', {
                     checked={ props.attributes.hideBackgroundWhileEditing }
                     onChange={ () => { props.setAttributes({ hideBackgroundWhileEditing: !props.attributes.hideBackgroundWhileEditing }); } }
                 />
-              </PanelRow>
-
-              <PanelRow>
-                <pre>{JSON.stringify(props, null, 2)}</pre>
               </PanelRow>
             </PanelBody>
 
