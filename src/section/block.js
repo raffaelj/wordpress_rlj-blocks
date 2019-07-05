@@ -26,6 +26,8 @@ const {
   MediaPlaceholder,
   MediaUpload,
   MediaUploadCheck,
+	withColors,
+  PanelColorSettings,
 } = wp.editor;
 
 const {
@@ -109,7 +111,7 @@ registerBlockType( 'rlj/section', {
     },
     'size': {
       'type': 'string',
-      'default': 'full'
+      'default': 'large'
     },
     'sizes': {
       'type': 'object'
@@ -125,6 +127,15 @@ registerBlockType( 'rlj/section', {
       'type': 'boolean',
       'default': false
     },
+    'backgroundColor': {
+      'type': 'string'
+    },
+    'customBackgroundColor': {
+      'type': 'string'
+    },
+    // 'textColor': {
+      // 'type': 'object'
+    // },
     // 'dimRatio': {
       // 'type': 'number',
       // 'default': 50
@@ -144,7 +155,8 @@ registerBlockType( 'rlj/section', {
     // }
   },
 
-  edit: function( props ) {
+  // edit: withColors( 'backgroundColor', { textColor: 'color' } )(function( props ) {
+  edit: withColors( 'backgroundColor')(function( props ) {
 
     function getImageSizeOptions() {
 
@@ -157,7 +169,7 @@ registerBlockType( 'rlj/section', {
 
     }
 
-    var style = null;
+    var style = {};
     var classes = props.className;
 
     var image_preview_style = {
@@ -165,18 +177,36 @@ registerBlockType( 'rlj/section', {
       margin: '0 auto',
     }
 
+    var image_hide_style = {
+      maxWidth: '40px',
+      maxHeight: '40px',
+      margin: '0',
+      position: 'absolute',
+      right: '0',
+      opacity: '.3'
+    }
+
     if (props.attributes.url) {
 
       if (!props.attributes.hideBackgroundWhileEditing) {
-        style = {
-          backgroundImage: 'url(' + props.attributes.url + ')'
-        };
+        style.backgroundImage = 'url(' + props.attributes.url + ')';
       }
       
       classes += ' has-background';
       
       if (props.attributes.hasParallax) {
           classes += ' has-parallax';
+      }
+
+    }
+
+    if (props.backgroundColor.color) {
+
+      // if (props.backgroundColor.class) {
+        // classes += ' ' + props.backgroundColor.class;
+      // }
+      if (props.backgroundColor.color) {
+        style.backgroundColor = props.backgroundColor.color
       }
 
     }
@@ -284,6 +314,23 @@ registerBlockType( 'rlj/section', {
               </PanelRow>
               ) }
             </PanelBody>
+                <PanelColorSettings
+                  title={ __( 'Color Settings' ) }
+                  initialOpen={ false }
+                  colorSettings={ [
+                    {
+                      value: props.backgroundColor.color,
+                      onChange: props.setBackgroundColor,
+                      label: __( 'Background Color' ),
+                    },
+                    // {
+                      // value: props.textColor.color,
+                      // onChange: props.setTextColor,
+                      // label: __( 'Text Color' ),
+                    // },
+                  ] }
+                >
+                </PanelColorSettings>
 
       </InspectorControls>
       ,
@@ -291,22 +338,27 @@ registerBlockType( 'rlj/section', {
         className={ classes }
         style={ style }
       >
+        { (props.attributes.url && props.attributes.hideBackgroundWhileEditing) && ( 
+          <img
+            src={props.attributes.url}
+            style={image_hide_style}
+          />
+         )
+        }
         <InnerBlocks />
       </div>
     ];
 
-  },
+  }),
 
   save: function( props ) {
 
-    var style = null;
+    var style = {};
     var classes = '';
 
     if (props.attributes.url) {
 
-      style = {
-        backgroundImage: 'url(' + props.attributes.url + ')'
-      };
+      style.backgroundImage = 'url(' + props.attributes.url + ')';
 
       classes += ' has-background';
 
@@ -314,6 +366,13 @@ registerBlockType( 'rlj/section', {
           classes += ' has-parallax';
       }
 
+    }
+// console.log(props);
+    if (props.attributes.backgroundColor) {
+      classes += ' has-' + props.attributes.backgroundColor + '-background-color';
+    }
+    if (props.attributes.customBackgroundColor) {
+      style.backgroundColor = props.attributes.customBackgroundColor;
     }
 
     return (
