@@ -123,6 +123,10 @@ registerBlockType( 'rlj/section', {
       'type': 'boolean',
       'default': false
     },
+    'overlay': {
+      'type': 'boolean',
+      'default': false
+    },
     'hideBackgroundWhileEditing': {
       'type': 'boolean',
       'default': false
@@ -202,13 +206,14 @@ registerBlockType( 'rlj/section', {
 
     if (props.backgroundColor.color) {
 
-      // if (props.backgroundColor.class) {
-        // classes += ' ' + props.backgroundColor.class;
-      // }
       if (props.backgroundColor.color) {
         style.backgroundColor = props.backgroundColor.color
       }
 
+    }
+
+    if (props.attributes.overlay) {
+      classes += ' has-background-dim';
     }
 
     return [
@@ -222,9 +227,18 @@ registerBlockType( 'rlj/section', {
                     title: __( 'Background' ),
                     instructions: __( 'Upload an image or pick one from your media library.' ),
                   } }
-                  onSelect={ media => { 
+                  onSelect={ media => {
                     // console.log(media);
-                    props.setAttributes({ id: media.id, url: media.url, sizes: media.sizes }); 
+                    props.setAttributes({
+                      id: media.id,
+                      url: media.url,
+                      sizes: media.sizes
+                      });
+                    if (props.attributes.size && media.sizes[props.attributes.size]) {
+                      props.setAttributes({
+                        url: media.sizes[props.attributes.size].url
+                      })
+                    }
                   } }
                   accept='image/*'
                   allowedTypes={ ALLOWED_MEDIA_TYPES }
@@ -244,7 +258,17 @@ registerBlockType( 'rlj/section', {
               <PanelRow>
                 <MediaUploadCheck>
                   <MediaUpload
-                    onSelect={ media => { props.setAttributes({ id: media.id, url: media.url, sizes: media.sizes }); } }
+                    onSelect={ media => {
+                      props.setAttributes({
+                        id: media.id,
+                        url: media.url,
+                        sizes: media.sizes });
+                      if (props.attributes.size && media.sizes[props.attributes.size]) {
+                        props.setAttributes({
+                          url: media.sizes[props.attributes.size].url
+                        })
+                      }
+                    } }
                     allowedTypes={ ALLOWED_MEDIA_TYPES }
                     value={ props.attributes.id }
                     render={ ( { open } ) => (
@@ -314,23 +338,36 @@ registerBlockType( 'rlj/section', {
               </PanelRow>
               ) }
             </PanelBody>
-                <PanelColorSettings
-                  title={ __( 'Color Settings' ) }
-                  initialOpen={ false }
-                  colorSettings={ [
-                    {
-                      value: props.backgroundColor.color,
-                      onChange: props.setBackgroundColor,
-                      label: __( 'Background Color' ),
-                    },
-                    // {
-                      // value: props.textColor.color,
-                      // onChange: props.setTextColor,
-                      // label: __( 'Text Color' ),
-                    // },
-                  ] }
-                >
-                </PanelColorSettings>
+            <PanelColorSettings
+              title={ __( 'Color Settings' ) }
+              initialOpen={ false }
+              colorSettings={ [
+                {
+                  value: props.backgroundColor.color,
+                  onChange: props.setBackgroundColor,
+                  label: __( 'Background Color' ),
+                },
+                // {
+                  // value: props.textColor.color,
+                  // onChange: props.setTextColor,
+                  // label: __( 'Text Color' ),
+                // },
+              ] }
+            >
+            <PanelRow>
+              <label
+                htmlFor="rlj-section-overlay"
+              >
+                  { __( 'Overlay', 'rlj' ) }
+              </label>
+              <FormToggle
+                id="rlj-section-overlay"
+                label={ __( 'Overlay', 'rlj' ) }
+                checked={ props.attributes.overlay }
+                onChange={ () => { props.setAttributes({ overlay: !props.attributes.overlay }); } }
+              />
+            </PanelRow>
+            </PanelColorSettings>
 
       </InspectorControls>
       ,
@@ -340,8 +377,8 @@ registerBlockType( 'rlj/section', {
       >
         { (props.attributes.url && props.attributes.hideBackgroundWhileEditing) && ( 
           <img
-            src={props.attributes.url}
-            style={image_hide_style}
+            src={ props.attributes.url }
+            style={ image_hide_style }
           />
          )
         }
@@ -367,12 +404,17 @@ registerBlockType( 'rlj/section', {
       }
 
     }
-// console.log(props);
+
     if (props.attributes.backgroundColor) {
       classes += ' has-' + props.attributes.backgroundColor + '-background-color';
     }
+
     if (props.attributes.customBackgroundColor) {
       style.backgroundColor = props.attributes.customBackgroundColor;
+    }
+
+    if (props.attributes.overlay) {
+      classes += ' has-background-dim';
     }
 
     return (
