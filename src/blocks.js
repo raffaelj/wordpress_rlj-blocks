@@ -10,3 +10,4 @@
  */
 
 import './section/block.js';
+import './videolink/block.js';
