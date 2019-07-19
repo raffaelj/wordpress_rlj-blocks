@@ -73,22 +73,22 @@ registerBlockType( 'rlj/videolink', {
 
     var siteurl = ajaxurl.replace('/wp-admin/admin-ajax.php','');
 
-    function updateUrl(e) {
+    function updateUrl(value) {
 
-      var url   = e.target.value,
+      var url   = value,
           video = parseVideoUrl(url),
           meta  = {
             video_id: video.id,
             video_provider: video.provider
           };
       
-      props.setAttributes({
-        provider: video.provider,
-        id: video.id,
-        url: url
-      });
-      
-      if (video.id != 'none') {
+      if (video.id && video.id != 'none') {
+
+        props.setAttributes({
+          provider: video.provider,
+          id: video.id,
+          url: url
+        });
 
         $.ajax({
           url: siteurl + '/getVideoLinkData',
@@ -107,6 +107,19 @@ registerBlockType( 'rlj/videolink', {
             console.log(errorThrown);
           }
         });  
+
+      }
+      else {
+        props.setAttributes({
+          provider: null,
+          id: null,
+          url: null,
+          text: null,
+          asset_id: null,
+          asset_url: null,
+          width: null,
+          height: null
+        });
 
       }
 
@@ -154,34 +167,39 @@ registerBlockType( 'rlj/videolink', {
           <TextControl
             label={ __('Text') }
             value={props.attributes.text}
-            onChange={ (e) => { props.setAttributes({text:e.target.value}) } }
+            onChange={ (value) => { props.setAttributes({text:value}) } }
           />
       </InspectorControls>
       ,
       <div style={style}>
-        { !props.attributes.url && (
-        <input
-          type="text"
-          value={props.attributes.url}
-          onChange={updateUrl}
-        />
-        )}
-        <img
-          src={props.attributes.asset_url}
-          alt="video thumbnail"
-          style={image_style}
-        />
-        <a
-          href={props.attributes.url}
-          title={props.attributes.title}
-          data-video-provider={props.attributes.provider}
-          data-video-id={props.attributes.id}
-          data-video-width={props.attributes.width}
-          data-video-height={props.attributes.height}
-          data-video-thumb={props.attributes.asset_url}
-        >
-        {props.attributes.text}
-        </a>
+        { (!props.attributes.id || props.attributes.id == 'none') && (
+          <TextControl
+            label={ __('Url') }
+            value={props.attributes.url}
+            help={ __('Enter a YouTube or Vimeo link.') }
+            onChange={updateUrl}
+          />
+        ) }
+        { (props.attributes.id && props.attributes.asset_url) && (
+          <img
+            src={props.attributes.asset_url}
+            alt="video thumbnail"
+            style={image_style}
+          />
+        ) }
+        { (props.attributes.id && props.attributes.asset_url) && (
+          <a
+            href={props.attributes.url}
+            title={props.attributes.title}
+            data-video-provider={props.attributes.provider}
+            data-video-id={props.attributes.id}
+            data-video-width={props.attributes.width}
+            data-video-height={props.attributes.height}
+            data-video-thumb={props.attributes.asset_url}
+          >
+          {props.attributes.text}
+          </a>
+        ) }
       </div>
     ];
 
