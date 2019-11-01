@@ -354,7 +354,7 @@ registerBlockType( 'rlj/section', {
                 // },
               ] }
             >
-            <PanelRow>
+            {/*<PanelRow>
               <label
                 htmlFor="rlj-section-overlay"
               >
@@ -366,7 +366,7 @@ registerBlockType( 'rlj/section', {
                 checked={ props.attributes.overlay }
                 onChange={ () => { props.setAttributes({ overlay: !props.attributes.overlay }); } }
               />
-            </PanelRow>
+            </PanelRow>*/}
             </PanelColorSettings>
 
       </InspectorControls>
