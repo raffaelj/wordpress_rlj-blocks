@@ -11,3 +11,6 @@
 
 import './section/block.js';
 import './videolink/block.js';
+
+import './extend/image-title.js';
+import './extend/gallery-titles.js';
