@@ -14,7 +14,7 @@ const {
   // MediaUploadCheck,
 	// withColors,
   // PanelColorSettings,
-} = wp.editor;
+} = wp.blockEditor;
 
 const {
   // IconButton,

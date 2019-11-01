@@ -9,7 +9,7 @@ const { Fragment }	= wp.element;
 const {
   InspectorControls,
   // InspectorAdvancedControls,
-} = wp.editor;
+} = wp.blockEditor;
 
 const {
   createHigherOrderComponent
@@ -78,11 +78,12 @@ const withAdvancedControls = createHigherOrderComponent( ( BlockEdit ) => {
 					<InspectorControls>
             <PanelBody>
               <PanelRow>
-            <ToggleControl
-              label={ __('Use captions as titles') }
-              checked={captionsToTitles}
-              onChange={ () => { setAttributes({captionsToTitles: !captionsToTitles}) } }
-            />
+                <ToggleControl
+                  label={ __('Use captions as titles') }
+                  help={ __('experimental') }
+                  checked={captionsToTitles}
+                  onChange={ () => { setAttributes({captionsToTitles: !captionsToTitles}) } }
+                />
               </PanelRow>
             </PanelBody>
 					</InspectorControls>

@@ -7,16 +7,19 @@ const { addFilter } = wp.hooks;
 const { Fragment }	= wp.element;
 
 const {
-  // InspectorControls,
-  InspectorAdvancedControls,
-} = wp.editor;
+  InspectorControls,
+  // InspectorAdvancedControls,
+} = wp.blockEditor;
 
 const {
   createHigherOrderComponent
 } = wp.compose;
 
 const {
-  TextControl,
+  // TextControl,
+  TextareaControl,
+  PanelBody,
+  PanelRow,
 } = wp.components;
 
 // restrict to specific block names
@@ -71,13 +74,17 @@ const withAdvancedControls = createHigherOrderComponent( ( BlockEdit ) => {
 			<Fragment>
 				<BlockEdit {...props} />
 				{ allowedBlocks.includes( name ) &&
-					<InspectorAdvancedControls>
-            <TextControl
-              label={ __('Title') }
-              value={props.attributes.title}
-              onChange={ (value) => { props.setAttributes({title:value}) } }
-            />
-					</InspectorAdvancedControls>
+					<InspectorControls>
+            <PanelBody>
+              <PanelRow>
+                <TextareaControl
+                  label={ __('Title') }
+                  value={props.attributes.title}
+                  onChange={ (value) => { props.setAttributes({title:value}) } }
+                />
+              </PanelRow>
+            </PanelBody>
+					</InspectorControls>
 				}
 			</Fragment>
 		);
