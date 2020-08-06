@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: rlj-blocks
- * Plugin URI: 
+ * Plugin URI:
  * Description: Custom Gutenberg blocks - videolink, section with background image, image title attributes
  * Author: Raffael Jesche
  * Author URI: https://www.raffael.one
- * Version: 0.1.2
+ * Version: 0.1.3
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  *
@@ -85,7 +85,7 @@ function rlj_replace_gallery_image_captions_with_titles( $block_content, $block 
                         "#^<a href#" // replace first link (caption may have links, too)
                     ],
                     [
-                        '',                             
+                        '',
                         '<a title="'.htmlspecialchars(strip_tags(br2nl(trim($match[2])))).'" href'
                     ],
                     $match[0]
