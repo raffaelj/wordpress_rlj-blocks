@@ -110,6 +110,7 @@ function applyImageTitle( extraProps, blockType, attributes ) {
 
     if (extraProps.children && extraProps.children.props
       && extraProps.children.props.children
+      && extraProps.children.props.children[0]
       && extraProps.children.props.children[0].props) {
 
         extraProps.children.props.children[0].props.title = title;
