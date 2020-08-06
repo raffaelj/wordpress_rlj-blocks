@@ -81,7 +81,7 @@ registerBlockType( 'rlj/videolink', {
             video_id: video.id,
             video_provider: video.provider
           };
-      
+
       if (video.id && video.id != 'none') {
 
         props.setAttributes({
@@ -90,7 +90,7 @@ registerBlockType( 'rlj/videolink', {
           url: url
         });
 
-        $.ajax({
+        jQuery.ajax({
           url: siteurl + '/getVideoLinkData',
           type: 'post',
           data: meta,
@@ -106,7 +106,7 @@ registerBlockType( 'rlj/videolink', {
           error: function(errorThrown){
             console.log(errorThrown);
           }
-        });  
+        });
 
       }
       else {
@@ -151,7 +151,7 @@ registerBlockType( 'rlj/videolink', {
         }
         return video;
     }
-    
+
     var style = {textAlign:'center'};
     var image_style = {display:'block',margin:'0 auto'};
 
