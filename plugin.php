@@ -4,17 +4,17 @@
  * Plugin URI:
  * Description: Custom Gutenberg blocks - videolink, section with background image, image title attributes
  * Author: Raffael Jesche
- * Author URI: https://www.raffael.one
+ * Author URI: https://www.rlj.me
  * Version: 0.1.3
- * License: GPL2+
- * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
+ * License: MIT
+ * License URI:
  *
  * @package CGB
  */
 
 if (!defined('ABSPATH')) exit;
 
-require_once plugin_dir_path( __FILE__ ) . 'src/init.php';
+require_once(__DIR__ . '/src/init.php');
 
 
 // change gallery captions to titles - experimental

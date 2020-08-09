@@ -71,9 +71,14 @@ registerBlockType( 'rlj/videolink', {
 
   edit: function( props ) {
 
-    var siteurl = ajaxurl.replace('/wp-admin/admin-ajax.php','');
+    var MODULE_EXISTS = typeof COCKPIT_VIDEOLINK_ROUTE != 'undefined' && typeof COCKPIT_UPLOAD_FOLDER != 'undefined';
 
     function updateUrl(value) {
+
+      if (!MODULE_EXISTS) {
+        console.log('module VideoLinkField is missing or not configured correctly');
+        return;
+      }
 
       var url   = value,
           video = parseVideoUrl(url),
@@ -91,16 +96,21 @@ registerBlockType( 'rlj/videolink', {
         });
 
         jQuery.ajax({
-          url: siteurl + '/getVideoLinkData',
+          url: COCKPIT_VIDEOLINK_ROUTE + '/getVideoLinkData',
           type: 'post',
           data: meta,
           success:function(data) {
             props.setAttributes({
-              width: data.meta.width,
-              height: data.meta.height,
-              asset_id: data.ID,
-              text: data.post_title,
-              asset_url: data.guid
+//               width:      data.meta.width,
+//               height:     data.meta.height,
+//               asset_id:   data.ID,
+//               text:       data.post_title,
+//               asset_url:  data.guid
+              width:      data.width,
+              height:     data.height,
+              asset_id:   data._id,
+              text:       data.title,
+              asset_url:  COCKPIT_UPLOAD_FOLDER + data.path
             });
           },
           error: function(errorThrown){
