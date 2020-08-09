@@ -71,7 +71,8 @@ registerBlockType( 'rlj/videolink', {
 
   edit: function( props ) {
 
-    var MODULE_EXISTS = typeof COCKPIT_VIDEOLINK_ROUTE != 'undefined' && typeof COCKPIT_UPLOAD_FOLDER != 'undefined';
+    var MODULE_EXISTS  = typeof COCKPIT_VIDEOLINK_ROUTE != 'undefined',
+        isWPMultiplane = typeof COCKPIT_UPLOAD_FOLDER != 'undefined';
 
     function updateUrl(value) {
 
@@ -100,17 +101,18 @@ registerBlockType( 'rlj/videolink', {
           type: 'post',
           data: meta,
           success:function(data) {
-            props.setAttributes({
-//               width:      data.meta.width,
-//               height:     data.meta.height,
-//               asset_id:   data.ID,
-//               text:       data.post_title,
-//               asset_url:  data.guid
+            props.setAttributes(isWPMultiplane ? {
               width:      data.width,
               height:     data.height,
               asset_id:   data._id,
               text:       data.title,
               asset_url:  COCKPIT_UPLOAD_FOLDER + data.path
+            } : {
+              width:      data.meta.width,
+              height:     data.meta.height,
+              asset_id:   data.ID,
+              text:       data.post_title,
+              asset_url:  data.guid
             });
           },
           error: function(errorThrown){
