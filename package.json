@@ -1,6 +1,6 @@
 {
-  "name": "rlj-blocks-cgb-guten-block",
-  "version": "1.0.0",
+  "name": "raffaelj/wordpress-rlj-blocks",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "start": "cgb-scripts start",

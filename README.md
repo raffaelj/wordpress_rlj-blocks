@@ -1,10 +1,14 @@
 # rlj-blocks
 
-WordPress Plugin to provide a wrapper block with a background image
+Experimental WordPress Plugin to provide a wrapper block with a background image, a video link block and an extension for image titles
 
-I called the block "Section". It is only a wrapper block, that contains other blocks, but with the ability to add a background image. It adds a handful classes and adds one style attribute if the section has a background image.
+I called the block "Section". It is only a wrapper block, that contains other blocks, but with the ability to add a background image. It adds a handful of classes and adds one style attribute if the section has a background image.
 
 The CSS will not load automatically in the frontend. You have to add your own custom styles. It's a bad design decision, to run tons of requests just to add 10 lines of css for each plugin. I use it with a child theme of Twentynineteen.
+
+The video link block requires the unreleased and legacy addon rlj-wp-utils or the experimental plugin WPMultiplane. I'll fix that later...
+
+The image title extensions are experimental.
 
 ## Installation
 
