@@ -5,7 +5,7 @@
  * Description: Custom Gutenberg blocks - videolink, section with background image, image title attributes
  * Author: Raffael Jesche
  * Author URI: https://www.rlj.me
- * Version: 0.1.3
+ * Version: 0.2.0
  * License: MIT
  * License URI:
  *
@@ -19,10 +19,8 @@ require_once(__DIR__ . '/src/init.php');
 
 // change gallery captions to titles - experimental
 
-if (!function_exists('br2nl')) {
-    function br2nl($str) {
-        return preg_replace('/\<br(\s*)?\/?\>/i', "\r\n", $str);
-    }
+function rlj_blocks_br2nl($str) {
+    return preg_replace('/\<br(\s*)?\/?\>/i', "\r\n", $str);
 }
 
 add_filter( 'render_block', 'rlj_replace_gallery_image_captions_with_titles', 10, 2 );
@@ -53,7 +51,7 @@ function rlj_replace_gallery_image_captions_with_titles( $block_content, $block 
             "#/><figcaption.*?>(.*?)</figcaption>#",
 
             function($match) {
-                return ' title="' . htmlspecialchars(strip_tags(br2nl(trim($match[1])))) . '" />';
+                return ' title="' . htmlspecialchars(strip_tags(rlj_blocks_br2nl(trim($match[1])))) . '" />';
             },
             $block_content
 
@@ -86,7 +84,7 @@ function rlj_replace_gallery_image_captions_with_titles( $block_content, $block 
                     ],
                     [
                         '',
-                        '<a title="'.htmlspecialchars(strip_tags(br2nl(trim($match[2])))).'" href'
+                        '<a title="'.htmlspecialchars(strip_tags(rlj_blocks_br2nl(trim($match[2])))).'" href'
                     ],
                     $match[0]
                 );
