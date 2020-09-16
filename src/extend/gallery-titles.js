@@ -2,27 +2,27 @@
 // inspired by: https://jeffreycarandang.com/extending-gutenberg-core-blocks-with-custom-attributes-and-controls/
 
 
-const { __ } = wp.i18n;
+const { __ }        = wp.i18n;
 const { addFilter } = wp.hooks;
-const { Fragment }	= wp.element;
+const { Fragment }  = wp.element;
 
 const {
-  InspectorControls,
+    InspectorControls,
 } = wp.blockEditor;
 
 const {
-  createHigherOrderComponent
+    createHigherOrderComponent
 } = wp.compose;
 
 const {
-  ToggleControl,
-  PanelBody,
-  PanelRow,
+    ToggleControl,
+    PanelBody,
+    PanelRow,
 } = wp.components;
 
 // restrict to specific block names
 const allowedBlocks = [
-  'core/gallery'
+    'core/gallery'
 ];
 
 /**
@@ -50,7 +50,7 @@ function addAttributes( settings ) {
 }
 
 /**
- * Add title on Advanced Block Panel.
+ * Add toggle on Advanced Block Panel to enable caption to title replacement.
  *
  * @param {function} BlockEdit Block edit component.
  * @return {function} BlockEdit Modified block edit component.
