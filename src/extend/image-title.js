@@ -1,4 +1,7 @@
 
+// deprecated - WP has img title attributes in core since a few months
+// Also this was a bit hackish and it now leads to block validation errors
+
 // inspired by: https://jeffreycarandang.com/extending-gutenberg-core-blocks-with-custom-attributes-and-controls/
 
 
