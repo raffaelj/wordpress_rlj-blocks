@@ -8,7 +8,6 @@ const { Fragment }	= wp.element;
 
 const {
   InspectorControls,
-  // InspectorAdvancedControls,
 } = wp.blockEditor;
 
 const {
@@ -17,7 +16,6 @@ const {
 
 const {
   ToggleControl,
-  // TextControl,
   PanelBody,
   PanelRow,
 } = wp.components;
@@ -35,20 +33,20 @@ const allowedBlocks = [
  */
 function addAttributes( settings ) {
 
-	// check if object exists for old Gutenberg version compatibility
-	// add allowedBlocks restriction
-	if( typeof settings.attributes !== 'undefined' && allowedBlocks.includes( settings.name ) ){
+    // check if object exists for old Gutenberg version compatibility
+    // add allowedBlocks restriction
+    if( typeof settings.attributes !== 'undefined' && allowedBlocks.includes( settings.name ) ){
 
-		settings.attributes = Object.assign( settings.attributes, {
-      captionsToTitles: {
-        type: 'boolean',
-        defautl: false
-      }
-		});
+        settings.attributes = Object.assign( settings.attributes, {
+            captionsToTitles: {
+                type: 'boolean',
+                default: false
+            }
+        });
 
-	}
+    }
 
-	return settings;
+    return settings;
 }
 
 /**
@@ -59,39 +57,38 @@ function addAttributes( settings ) {
  */
 const withAdvancedControls = createHigherOrderComponent( ( BlockEdit ) => {
 
-	return ( props ) => {
+    return ( props ) => {
 
-		const {
-			name,
-			attributes,
-			setAttributes,
-		} = props;
+        const {
+            name,
+            attributes,
+            setAttributes,
+        } = props;
 
-		const {
-			captionsToTitles,
-		} = attributes;
+        const {
+            captionsToTitles,
+        } = attributes;
 
-		return (
-			<Fragment>
-				<BlockEdit {...props} />
-				{ allowedBlocks.includes( name ) &&
-					<InspectorControls>
-            <PanelBody>
-              <PanelRow>
-                <ToggleControl
-                  label={ __('Use captions as titles') }
-                  help={ __('experimental') }
-                  checked={captionsToTitles}
-                  onChange={ () => { setAttributes({captionsToTitles: !captionsToTitles}) } }
-                />
-              </PanelRow>
-            </PanelBody>
-					</InspectorControls>
-				}
-
-			</Fragment>
-		);
-	};
+        return (
+            <Fragment>
+                <BlockEdit {...props} />
+                { allowedBlocks.includes( name ) &&
+                <InspectorControls>
+                    <PanelBody>
+                        <PanelRow>
+                            <ToggleControl
+                                label={ __('Use captions as titles') }
+                                help={ __('experimental') }
+                                checked={captionsToTitles}
+                                onChange={ () => { setAttributes({captionsToTitles: !captionsToTitles}) } }
+                            />
+                        </PanelRow>
+                    </PanelBody>
+                </InspectorControls>
+                }
+            </Fragment>
+        );
+    };
 
 }, 'withAdvancedControls');
 
@@ -107,36 +104,32 @@ const withAdvancedControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 function applyGalleryTitles( extraProps, blockType, attributes ) {
 
-	const { captionsToTitles } = attributes;
+    const { captionsToTitles } = attributes;
 
-// console.log(attributes);
-// console.log(extraProps);
-// console.log(extraProps.children.props.children);
+    if (typeof captionsToTitles !== 'undefined' && allowedBlocks.includes(blockType.name)) {
 
-	if ( typeof captionsToTitles !== 'undefined' && allowedBlocks.includes( blockType.name ) ) {
+        extraProps.captionsToTitles = captionsToTitles;
 
-    extraProps.captionsToTitles = captionsToTitles;
+    }
 
-	}
-
-	return extraProps;
+    return extraProps;
 }
 
 //add filters
 addFilter(
-	'blocks.registerBlockType',
-	'rlj/gallery-titles',
-	addAttributes
+    'blocks.registerBlockType',
+    'rlj/gallery-titles',
+    addAttributes
 );
 
 addFilter(
-	'editor.BlockEdit',
-	'rlj/gallery-titles-control',
-	withAdvancedControls
+    'editor.BlockEdit',
+    'rlj/gallery-titles-control',
+    withAdvancedControls
 );
 
 addFilter(
-	'blocks.getSaveContent.extraProps',
-	'rlj/applyGalleryTitles',
-	applyGalleryTitles
+    'blocks.getSaveContent.extraProps',
+    'rlj/applyGalleryTitles',
+    applyGalleryTitles
 );
