@@ -2,7 +2,7 @@
 /**
  * Plugin Name: rlj-blocks
  * Plugin URI:
- * Description: Custom Gutenberg blocks - videolink, section with background image, image title attributes
+ * Description: Custom Gutenberg blocks - videolink, section with background image, experimental gallery image title attributes
  * Author: Raffael Jesche
  * Author URI: https://www.rlj.me
  * Version: 0.2.0
@@ -19,11 +19,7 @@ require_once(__DIR__ . '/src/init.php');
 
 // change gallery captions to titles - experimental
 
-function rlj_blocks_br2nl($str) {
-    return preg_replace('/\<br(\s*)?\/?\>/i', "\r\n", $str);
-}
-
-add_filter( 'render_block', 'rlj_replace_gallery_image_captions_with_titles', 10, 2 );
+\add_filter( 'render_block', 'rlj_replace_gallery_image_captions_with_titles', 10, 2 );
 
 function rlj_replace_gallery_image_captions_with_titles( $block_content, $block ) {
 
@@ -36,6 +32,9 @@ function rlj_replace_gallery_image_captions_with_titles( $block_content, $block 
 
 // for debugging:
 // return '<pre style="color:#000;">' . print_r($block, true) . '</pre>';
+
+    $nl2br_regex   = '/\<br(\s*)?\/?\>/i';
+    $nl2br_replace = "\r\n";
 
     if (!isset($block['attrs']['linkTo'])) {
 
@@ -50,8 +49,12 @@ function rlj_replace_gallery_image_captions_with_titles( $block_content, $block 
 
             "#/><figcaption.*?>(.*?)</figcaption>#",
 
-            function($match) {
-                return ' title="' . htmlspecialchars(strip_tags(rlj_blocks_br2nl(trim($match[1])))) . '" />';
+            function($match) use ($nl2br_regex, $nl2br_replace) {
+                $str = trim($match[1]);
+                $str = preg_replace($nl2br_regex, $nl2br_replace, $str);
+                $str = htmlspecialchars(strip_tags($str));
+
+                return ' title="' . $str . '" />';
             },
             $block_content
 
@@ -73,9 +76,13 @@ function rlj_replace_gallery_image_captions_with_titles( $block_content, $block 
             // match everything inside figcaption
             "#<a.*?>(.*?)</a><figcaption.*?>(.*?)</figcaption>#",
 
-            function($match) {
+            function($match) use ($nl2br_regex, $nl2br_replace) {
 
 // return '<pre style="color:#000;">' . print_r($match, true) . '</pre>';
+
+                $str = trim($match[2]);
+                $str = preg_replace($nl2br_regex, $nl2br_replace, $str);
+                $str = htmlspecialchars(strip_tags($str));
 
                 return preg_replace(
                     [
@@ -84,7 +91,7 @@ function rlj_replace_gallery_image_captions_with_titles( $block_content, $block 
                     ],
                     [
                         '',
-                        '<a title="'.htmlspecialchars(strip_tags(rlj_blocks_br2nl(trim($match[2])))).'" href'
+                        '<a title="'.$str.'" href'
                     ],
                     $match[0]
                 );
