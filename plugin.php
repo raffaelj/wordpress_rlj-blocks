@@ -5,7 +5,7 @@
  * Description: Custom Gutenberg blocks - videolink, section with background image, experimental gallery image title attributes
  * Author: Raffael Jesche
  * Author URI: https://www.rlj.me
- * Version: 0.2.0
+ * Version: 0.2.1
  * License: MIT
  * License URI:
  *
