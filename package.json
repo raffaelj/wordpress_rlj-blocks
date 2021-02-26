@@ -1,6 +1,6 @@
 {
   "name": "raffaelj-wordpress-rlj-blocks",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
   "scripts": {
     "start": "cgb-scripts start",
