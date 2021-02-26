@@ -1,12 +1,9 @@
-
 // Notes and research:
 // https://javascriptforwp.com/how-to-use-inspectorcontrols/
 // https://github.com/WordPress/gutenberg/blob/master/packages/block-library/src/cover/edit.js
 // https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 // https://developer.wordpress.org/resource/dashicons/
 // https://wordpress.org/gutenberg/handbook/block-api/
-
-// <pre>{JSON.stringify(props, null, 2)}</pre>
 
 
 //  Import CSS.
@@ -26,7 +23,7 @@ const {
   MediaPlaceholder,
   MediaUpload,
   MediaUploadCheck,
-	withColors,
+  withColors,
   PanelColorSettings,
 } = wp.blockEditor;
 
@@ -43,30 +40,6 @@ const {
 
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 const IMAGE_BACKGROUND_TYPE = 'image';
-
-
-// fix to prevent a crash when clicking on "Styles" in the sidebar
-// if using without Gutenberg addon version >= 6.0.0
-// source: https://github.com/WordPress/gutenberg/issues/9897#issuecomment-478362380
-var el = wp.element.createElement;
-var allowSectionStyles = wp.compose.createHigherOrderComponent( function( BlockEdit ) {
-
-  return function( props ) {
-    var content = el( BlockEdit, props );
-
-    if( props.name === 'rlj/section' && typeof props.insertBlocksAfter === 'undefined' ) {
-      content = el( 'div', {} );
-    }
-
-    return el(
-      wp.element.Fragment, {}, content
-    );
-  };
-
-}, 'allowSectionStyles' );
-wp.hooks.addFilter( 'editor.BlockEdit', 'rlj/section', allowSectionStyles );
-// end of styles crash fix
-
 
 registerBlockType( 'rlj/section', {
 
@@ -195,9 +168,9 @@ registerBlockType( 'rlj/section', {
       if (!props.attributes.hideBackgroundWhileEditing) {
         style.backgroundImage = 'url(' + props.attributes.url + ')';
       }
-      
+
       classes += ' has-background';
-      
+
       if (props.attributes.hasParallax) {
           classes += ' has-parallax';
       }
@@ -286,7 +259,7 @@ registerBlockType( 'rlj/section', {
 
               { props.attributes.url && (
               <PanelRow>
-                <Button 
+                <Button
                   onClick={ () => { props.setAttributes({ id: null, url: null }); } }
                   className="button button-large"
                 >
@@ -375,7 +348,7 @@ registerBlockType( 'rlj/section', {
         className={ classes }
         style={ style }
       >
-        { (props.attributes.url && props.attributes.hideBackgroundWhileEditing) && ( 
+        { (props.attributes.url && props.attributes.hideBackgroundWhileEditing) && (
           <img
             src={ props.attributes.url }
             style={ image_hide_style }
