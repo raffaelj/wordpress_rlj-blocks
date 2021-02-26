@@ -7,3 +7,82 @@
 
 @import '../common';
 
+
+// Videolink
+$iframe-width:  480px !default;
+$iframe-height: 270px !default;
+
+$color-white-transp: rgba(255,255,255,.8) !default;
+$color-black-transp: rgba(0,0,0,.5) !default;
+
+.video_embed_container {
+    position: relative;
+    margin: 1em auto .5em;
+    padding-bottom: 75%; // 4:3
+    height: 0;
+    max-width: 100%;
+    overflow: hidden;
+    &.ratio-16-9 {
+        padding-bottom: 56.25%; // 16:9
+    }
+    img {
+        position: absolute;
+        top: -9999px;
+        right: -9999px;
+        bottom: -9999px;
+        left: -9999px;
+        margin: auto;
+        min-width: 100%;
+        min-height: 100%;
+    }
+
+    .icon-play {
+        position: absolute;
+        display: block;
+        font-size: 1.5em;
+        left: 50%;
+        top: 50%;
+        margin-left: -1em;
+        margin-top: -1em;
+        background-color: $color-black-transp;
+    }
+    + a {
+        display: block;
+        text-align: center;
+    }
+}
+
+
+$icon-width: 2em !default;
+$icon-height: 2em !default;
+
+$color-text: #222 !default;
+$color-white-transp: rgba(255,255,255,.9) !default;
+$color-icon: $color-text !default;
+$color-icon-background: $color-white-transp !default;
+
+[class^=icon-] {
+    position: relative;
+    display: inline-block;
+    width: $icon-width;
+    height: $icon-height;
+    background-color: $color-icon-background;
+    color: $color-icon;
+    border-radius: 50%;
+}
+
+.icon-play {
+    &:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: $icon-width / 2.5;
+        margin-top: - $icon-height / 5;
+        border-style: solid;
+        border-width: ($icon-height / 5) ($icon-height / 3);
+        border-top-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        background-color: transparent;
+    }
+}
